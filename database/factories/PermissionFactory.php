@@ -1,17 +1,18 @@
 <?php
 
-namespace {{ factoryNamespace }};
+namespace Database\Factories;
 
+use App\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class {{ factory }}Factory extends Factory
+class PermissionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = {{ factory }}::class;
+    protected $model = Permission::class;
 
     /**
      * Define the model's default state.
@@ -21,7 +22,7 @@ class {{ factory }}Factory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->words(3, true),
         ];
     }
 }
