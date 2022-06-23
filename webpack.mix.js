@@ -16,6 +16,9 @@ mix.postCss('resources/css/app.css', 'public/css', [require('tailwindcss'), requ
 
 if (mix.inProduction()) {
     mix.version();
+} else {
+    mix.sourceMaps();
+    mix.browserSync(process.env.APP_URL);
 }
 
 mix.disableNotifications();
