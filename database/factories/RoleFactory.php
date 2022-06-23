@@ -23,7 +23,7 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'name' => Str::title($this->faker->words(2, true)),
+            'name' => Str::title($this->faker->words(3, true)),
         ];
     }
 }

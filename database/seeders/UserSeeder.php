@@ -25,11 +25,11 @@ class UserSeeder extends Seeder
 
         $users
             ->mapInto(Collection::class)
-            ->map(function ($user) {
-                if (User::where('email', $user->get('email'))->doesntExist()) {
-                    $user = User::factory()->create($user->except('roles')->all());
+            ->map(function ($data) {
+                if (User::where('email', $data->get('email'))->doesntExist()) {
+                    $user = User::factory()->create($data->except('roles')->all());
 
-                    collect($user->get('roles', []))->map(function ($role) use ($user) {
+                    collect($data->get('roles', []))->map(function ($role) use ($user) {
                         $user->assignRole($role);
                     });
                 }
