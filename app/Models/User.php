@@ -49,6 +49,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $searchable = [
+        'name',
+        'email',
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -66,6 +71,33 @@ class User extends Authenticatable
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Scope a query to search roles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search
+     * @return void
+     */
+    public function scopeSearch($query, $search = '')
+    {
+        if ($search === '') {
+            return $query;
+        }
+
+        if (
+            preg_match('/^([a-z0-9_]+):(.+)$/i', $search, $matches)
+            && in_array($matches[1], $this->searchable)
+        ) {
+            return $query->where($matches[1], 'like', "%{$matches[2]}%");
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------

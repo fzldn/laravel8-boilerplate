@@ -15,9 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
                     @can('viewAny', \App\Models\Role::class)
                         <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
                             {{ __('Roles') }}
+                        </x-nav-link>
+                    @endcan
+
+                    @can('viewAny', \App\Models\User::class)
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('Users') }}
                         </x-nav-link>
                     @endcan
                 </div>
@@ -71,9 +78,16 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
             @can('viewAny', \App\Models\Role::class)
                 <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
                     {{ __('Roles') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @can('viewAny', \App\Models\User::class)
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    {{ __('Users') }}
                 </x-responsive-nav-link>
             @endcan
         </div>
