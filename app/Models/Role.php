@@ -15,6 +15,8 @@ class Role extends BaseRole
     |--------------------------------------------------------------------------
     */
 
+    protected $searchable = ['name'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -32,6 +34,42 @@ class Role extends BaseRole
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Scope a query to exclude super admin.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function scopeWithoutSuperAdmin($query)
+    {
+        $query->where('name', '!=', 'Super Admin');
+    }
+
+    /**
+     * Scope a query to search roles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search
+     * @return void
+     */
+    public function scopeSearch($query, $search = '')
+    {
+        if ($search === '') {
+            return $query;
+        }
+
+        if (
+            preg_match('/^([a-z0-9_]+):(.+)$/i', $search, $matches)
+            && in_array($matches[1], $this->searchable)
+        ) {
+            return $query->where($matches[1], 'like', "%{$matches[2]}%");
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
