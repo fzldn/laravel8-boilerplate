@@ -28,7 +28,9 @@ class RoleController extends Controller
         $perPage = request('perPage', 10);
         $search = request('search', '');
 
-        $roles = Role::withoutSuperAdmin()
+        $roles = Role::withCount('permissions')
+            ->withCount('users')
+            ->withoutSuperAdmin()
             ->search($search)
             ->orderBy('name')
             ->paginate($perPage)

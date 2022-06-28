@@ -9,10 +9,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <form class="flex items-center mb-4">
                 @can('create', \App\Models\Role::class)
-                    <a href="{{ route('roles.create') }}" class="inline-flex items-center uppercase text-sm shadow-sm py-2.5 px-5 mr-3 font-semibold text-gray-900 bg-white rounded-md border border-gray-300 hover:bg-gray-100 hover:text-indigo-700 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <button type="button" class="inline-flex items-center uppercase text-sm shadow-sm py-2.5 px-5 mr-3 font-semibold text-gray-900 bg-white rounded-md border border-gray-300 hover:bg-gray-100 hover:text-indigo-700 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                         <x-icon.plus class="w-4 h-4 mr-2" />
                         <span>{{ __('Add Role') }}</span>
-                    </a>
+                    </button>
                 @endcan
                 <div class="flex">
                     <label for="perPage" class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
@@ -24,7 +24,10 @@
                         @endforeach
                     </select>
                 </div>
-                <x-input type="search" name="search" :placeholder="__('Search...')" class="ml-auto" autocomplete="off" :value="request('search')" onsearch="this.closest('form').submit()"/>
+                <div class="relative ml-auto">
+                    <x-icon.search class="absolute top-3 left-3 pointer-events-none w-4 h-4 fill-gray-400"/>
+                    <x-input type="search" class="pl-9" name="search" :placeholder="__('Search...')" autocomplete="off" :value="request('search')" onsearch="this.closest('form').submit()"/>
+                </div>
             </form>
             <div class="relative overflow-x-auto border sm:rounded-lg mb-4">
                 <table class="w-full text-sm text-left text-gray-500">
@@ -35,6 +38,12 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 {{ __('Role') }}
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                {{ __('Permissions') }}
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                {{ __('Used by') }}
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 {{ __('Created at') }}
@@ -52,6 +61,12 @@
                                 </td>
                                 <td class="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap">
                                     {{ $role->name }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap {{ !$role->permissions_count ? 'text-gray-300' : '' }}">
+                                    {{ $role->permissions_count }} {{ Str::plural(__('Permission'), $role->permissions_count) }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap {{ !$role->users_count ? 'text-gray-300' : '' }}">
+                                    {{ $role->users_count }} {{ Str::plural(__('User'), $role->users_count) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <abbr title="{{ $role->created_at->format('c') }}">{{ $role->created_at->diffForHumans() }}</abbr>

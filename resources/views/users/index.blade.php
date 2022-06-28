@@ -24,7 +24,10 @@
                         @endforeach
                     </select>
                 </div>
-                <x-input type="search" name="search" :placeholder="__('Search...')" class="ml-auto" autocomplete="off" :value="request('search')" onsearch="this.closest('form').submit()"/>
+                <div class="relative ml-auto">
+                    <x-icon.search class="absolute top-3 left-3 pointer-events-none w-4 h-4 fill-gray-400"/>
+                    <x-input type="search" class="pl-9" name="search" :placeholder="__('Search...')" autocomplete="off" :value="request('search')" onsearch="this.closest('form').submit()"/>
+                </div>
             </form>
             <div class="relative overflow-x-auto border sm:rounded-lg mb-4">
                 <table class="w-full text-sm text-left text-gray-500">
