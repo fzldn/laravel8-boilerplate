@@ -2,9 +2,11 @@
     'variant' => 'default',
     'size' => 'md',
     'tag' => 'button',
+    'leftIcon' => '',
+    'rightIcon' => '',
 ])
 @php
-    $classes = 'appearance-none inline-block border font-semibold transition-colors duration-200 ease-in-out focus:outline-none focus:ring focus:ring-opacity-50';
+    $classes = 'appearance-none ' . ($leftIcon || $rightIcon ? 'inline-flex items-center gap-2' : 'inline-block') . ' border font-semibold whitespace-nowrap transition-colors duration-200 ease-in-out focus:outline-none focus:ring focus:ring-opacity-50';
 
     switch ($size) {
         default:
@@ -40,5 +42,15 @@
     }
 @endphp
 <{{ $tag }} {{ $attributes->merge($addedAttributes) }}>
-    {{ $slot }}
+    @if ($leftIcon || $rightIcon)
+        @if ($leftIcon)
+            <x-dynamic-component :component="$leftIcon" class="w-4 h-4" />
+        @endif
+        <span>{{ $slot}}</span>
+        @if ($rightIcon)
+            <x-dynamic-component :component="$rightIcon" class="w-4 h-4" />
+        @endif
+    @else
+        {{ $slot }}
+    @endif
 </{{ $tag }}>
